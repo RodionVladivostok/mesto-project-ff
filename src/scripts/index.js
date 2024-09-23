@@ -34,10 +34,10 @@ function deleteCard(event) {
 }
 
 // @todo: Вывести карточки на страницу
-initialCards.forEach(cardInfo => {
-    const createdCard = createCard(cardInfo, deleteCard. openBigImagePopup);
+initialCards.forEach(cardInfo => {  
+    const createdCard = createCard(cardInfo, deleteCard, openBigImagePopup);
     placesList.append(createdCard);
-    });   
+});
 
 // ________________________________________________________________________________________________________________
 
@@ -70,16 +70,11 @@ const popupImage = document.querySelector(".popup__image");
 const popupImageCaption = document.querySelector(".popup__caption");
 
 function openBigImagePopup(cardInfo) {
-  console.log('ФУНКЦИЯ НОВАЯ')
   popupImage.src = cardInfo.link;
   popupImage.alt = cardInfo.name;
   popupImageCaption.textContent = cardInfo.name;
   openPopup(popupTypeImage);
 }
-
-cardPicture.addEventListener('click', function () {
-  openBigImagePopup(cardInfo);
-});
 
 // @todo: Закрытие модальных окон - функция
 
@@ -90,23 +85,71 @@ function closePopup(popupElement) {
 // @todo: Закрытие модального окна кликом на крестик
 const buttonClose = document.querySelectorAll(".popup__close");
 
-buttonClose.forEach((button) => {
+function closeAllPopups() {
+  closePopup(popupTypeEdit);
+  closePopup(popupTypeNewCard);
+  closePopup(popupTypeImage);
+}
+
+buttonClose.forEach(button => {
   button.addEventListener('click', function() {
-    closePopup(popupTypeEdit);
-    closePopup(popupTypeNewCard);
-    closePopup(popupTypeImage);
-    })
+    closeAllPopups();
+  })
+  
 })
 
-// @todo: Закрытие модального окна по оверлею
-const modalOverlay = document.querySelectorAll(".popup");
-function keyHandler(evt) {
-  if (evt.key === "Esc") {
-    closePopup(popupTypeEdit);
-    closePopup(popupTypeNewCard);
-    closePopup(popupTypeImage);
-  };
-};
+// @todo: Закрытие модального окна кликом на оверлэй
+const overlayButtonClose = document.querySelectorAll(".popup_type_image");
 
-modalOverlay.addEventListener('keydown', keyHandler);
+overlayButtonClose.forEach(overlay => {
+  overlay.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('popup_type_image') && !evt.target.classList.contains('popup__image')) {
+      closeAllPopups();
+    }   
+  })
+})
 
+// @todo: Закрытие модального окна нажатием на Esc
+
+document.addEventListener('keyup', function (evt) {
+  if (evt.keyCode === 27) {
+    closeAllPopups();
+  }
+});
+
+//______________________________________________________________________________________
+// @todo: Редактирование имени и информации о себе
+
+// Находим форму в DOM
+const formElement = document.forms.edit_profile; // Воспользуйтесь методом querySelector()
+// Находим поля формы в DOM
+const nameInput = formElement.elements.name;// Воспользуйтесь инструментом .querySelector()
+const jobInput = formElement.elements.description;// Воспользуйтесь инструментом .querySelector()
+
+nameInput.value = document.querySelector(".profile__title").textContent;
+jobInput.value = document.querySelector(".profile__description").textContent;
+
+// Обработчик «отправки» формы, хотя пока
+// она никуда отправляться не будет
+
+function handleFormSubmit(evt) {
+    evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
+                                                // Так мы можем определить свою логику отправки.
+                                                // О том, как это делать, расскажем позже.
+
+    // Получите значение полей jobInput и nameInput из свойства value
+
+    // Выберите элементы, куда должны быть вставлены значения полей
+
+    // Вставьте новые значения с помощью textContent
+
+    closePopup(popupTypeEdit)
+}
+
+// Прикрепляем обработчик к форме:
+// он будет следить за событием “submit” - «отправка»
+formElement.addEventListener('submit', handleFormSubmit);
+
+// console.log(document.querySelector(".profile__title").textContent);
+// console.log(document.querySelector(".profile__description").textContent);
+// console.log(formElement.elements);
