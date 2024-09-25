@@ -43,7 +43,7 @@ initialCards.forEach(cardInfo => {
 
 // @todo: Открытие модального окна - общая функция
 
-function openPopup(popupElement) {
+function openModal(popupElement) {
   popupElement.classList.add('popup_is-opened');
 }
 
@@ -53,7 +53,7 @@ const profileEditButton = document.querySelector(".profile__edit-button");
 const popupTypeEdit = document.querySelector(".popup_type_edit");
 
 profileEditButton.addEventListener('click', function () {
-  openPopup(popupTypeEdit);
+  openModal(popupTypeEdit);
 });
 
 // @todo: Открытие модального окна "+"
@@ -61,7 +61,7 @@ const profileAddButton = document.querySelector(".profile__add-button");
 const popupTypeNewCard = document.querySelector(".popup_type_new-card");
 
 profileAddButton.addEventListener('click', function () {
-  openPopup(popupTypeNewCard);
+  openModal(popupTypeNewCard);
 });
 
 // @todo: Открытие модального окна "Картинка"
@@ -73,39 +73,38 @@ function openBigImagePopup(cardInfo) {
   popupImage.src = cardInfo.link;
   popupImage.alt = cardInfo.name;
   popupImageCaption.textContent = cardInfo.name;
-  openPopup(popupTypeImage);
+  openModal(popupTypeImage);
 }
 
 // @todo: Закрытие модальных окон - функция
 
-function closePopup(popupElement) {
+function closeModal(popupElement) {
   popupElement.classList.remove('popup_is-opened');
 }
 
 // @todo: Закрытие модального окна кликом на крестик
 const buttonClose = document.querySelectorAll(".popup__close");
 
-function closeAllPopups() {
-  closePopup(popupTypeEdit);
-  closePopup(popupTypeNewCard);
-  closePopup(popupTypeImage);
+function closeAllModals() {
+  closeModal(popupTypeEdit);
+  closeModal(popupTypeNewCard);
+  closeModal(popupTypeImage);
 }
 
 buttonClose.forEach(button => {
   button.addEventListener('click', function() {
-    closeAllPopups();
+    closeAllModals();
   })
   
 })
 
-// @todo: Закрытие модального окна кликом на оверлэй
-const overlayButtonClose = document.querySelectorAll(".popup_type_image");
+// @todo: Закрытие модальных окон кликом на оверлэй
 
-overlayButtonClose.forEach(overlay => {
-  overlay.addEventListener('click', function(evt) {
-    if (evt.target.classList.contains('popup_type_image') && !evt.target.classList.contains('popup__image')) {
-      closeAllPopups();
-    }   
+document.querySelectorAll('.popup').forEach(function(popup) {
+  popup.addEventListener('click', function(evt) {
+    if (evt.target.classList.contains('popup')) {
+      closeModal(evt.target)
+    }
   })
 })
 
@@ -113,11 +112,10 @@ overlayButtonClose.forEach(overlay => {
 
 document.addEventListener('keyup', function (evt) {
   if (evt.keyCode === 27) {
-    closeAllPopups();
+    closeAllModals();
   }
 });
 
-//______________________________________________________________________________________
 // @todo: Редактирование имени и информации о себе
 
 // Находим форму в DOM
@@ -136,20 +134,42 @@ function handleFormSubmit(evt) {
     evt.preventDefault(); // Эта строчка отменяет стандартную отправку формы.
                                                 // Так мы можем определить свою логику отправки.
                                                 // О том, как это делать, расскажем позже.
+     
 
     // Получите значение полей jobInput и nameInput из свойства value
 
     // Выберите элементы, куда должны быть вставлены значения полей
 
     // Вставьте новые значения с помощью textContent
-
-    closePopup(popupTypeEdit)
+    const nameInput = document.querySelector('.popup__input_type_name').value
+    document.querySelector(".profile__title").textContent = nameInput;
+    
+    const jobInput = document.querySelector('.popup__input_type_description').value
+    document.querySelector(".profile__description").textContent = jobInput;
+    
+    closeModal(popupTypeEdit)
 }
 
 // Прикрепляем обработчик к форме:
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('submit', handleFormSubmit);
 
-// console.log(document.querySelector(".profile__title").textContent);
-// console.log(document.querySelector(".profile__description").textContent);
-// console.log(formElement.elements);
+//__________________________________________________________________________________
+// @todo: Добавление карточки в начало списка
+const newPlaceFormElement = document.forms.new_place;
+
+function addNewCardSubmit(evt) {
+  evt.preventDefault();
+
+  const cardInfo = {
+    name: document.querySelector('.popup__input_type_card-name').value,
+    link: document.querySelector('.popup__input_type_url').value
+  }
+  
+  const createdCard = createCard(cardInfo, deleteCard, openBigImagePopup);
+  placesList.prepend(createdCard);
+ 
+  closeModal(popupTypeNewCard);
+}
+
+newPlaceFormElement.addEventListener('submit', addNewCardSubmit);
