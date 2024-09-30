@@ -7,17 +7,28 @@ const cardTemplate = document.querySelector("#card-template").content;
 const placesList = document.querySelector(".places__list");
 
 // @todo: Функция создания карточки
-function createCard(cardInfo, deleteCard, onImageClick) {
+function createCard(cardInfo, deleteCard, onImageClick, onLikeButtonClick) {
     const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
     const cardPicture = cardElement.querySelector(".card__image");
     const cardTitle = cardElement.querySelector(".card__title");
     const buttonDeleteCard = cardElement.querySelector(".card__delete-button");
     buttonDeleteCard.addEventListener("click", deleteCard);
-  
+    
 //ПР-6 start______________________________________________________
+
     cardPicture.addEventListener('click', function () {
       onImageClick(cardInfo);
     });
+
+// @todo: Лайк карточки
+    const cardLikeButton = cardElement.querySelector(".card__like-button");
+    cardLikeButton.addEventListener("click", onLikeButtonClick);
+
+    function onLikeButtonClick(evt) {
+      if (evt.target.classList.contains("card__like-button")) {
+        evt.target.classList.toggle("card__like-button_is-active");
+        }
+    }
 
 //ПР-6 finish__________________________________________________________
     cardPicture.src = cardInfo.link;
@@ -42,7 +53,6 @@ initialCards.forEach(cardInfo => {
 // ________________________________________________________________________________________________________________
 
 // @todo: Открытие модального окна - общая функция
-
 function openModal(popupElement) {
   popupElement.classList.add('popup_is-opened');
 }
@@ -154,7 +164,6 @@ function handleFormSubmit(evt) {
 // он будет следить за событием “submit” - «отправка»
 formElement.addEventListener('submit', handleFormSubmit);
 
-//__________________________________________________________________________________
 // @todo: Добавление карточки в начало списка
 const newPlaceFormElement = document.forms.new_place;
 
@@ -173,3 +182,10 @@ function addNewCardSubmit(evt) {
 }
 
 newPlaceFormElement.addEventListener('submit', addNewCardSubmit);
+
+//__________________________________________________________________________________
+// @todo: Плавное открытие и закрытие попапов
+
+document.querySelectorAll(".popup").forEach(function (popup) {
+  popup.classList.add("popup_is-animated");
+})
