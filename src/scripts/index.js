@@ -1,23 +1,27 @@
 import '../pages/index.css';
 import {initialCards} from './cards';
+import {openBigImagePopup} from './modal';
 
 // @todo: Темплейт карточки
 const cardTemplate = document.querySelector("#card-template").content;
 // @todo: DOM узлы
 const placesList = document.querySelector(".places__list");
 
+// @todo: Открытие модального окна "Картинка"
+const popupTypeImage = document.querySelector(".popup_type_image");
+
 // @todo: Функция создания карточки
 function createCard(cardInfo, deleteCard, onImageClick, onLikeButtonClick) {
-    const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
-    const cardPicture = cardElement.querySelector(".card__image");
-    const cardTitle = cardElement.querySelector(".card__title");
-    const buttonDeleteCard = cardElement.querySelector(".card__delete-button");
-    buttonDeleteCard.addEventListener("click", deleteCard);
+  const cardElement = cardTemplate.querySelector(".places__item").cloneNode(true);
+  const cardPicture = cardElement.querySelector(".card__image");
+  const cardTitle = cardElement.querySelector(".card__title");
+  const buttonDeleteCard = cardElement.querySelector(".card__delete-button");
+  buttonDeleteCard.addEventListener("click", deleteCard);
     
 //ПР-6 start______________________________________________________
 
     cardPicture.addEventListener('click', function () {
-      onImageClick(cardInfo);
+      onImageClick(cardInfo, popupTypeImage);
     });
 
 // @todo: Лайк карточки
@@ -25,9 +29,7 @@ function createCard(cardInfo, deleteCard, onImageClick, onLikeButtonClick) {
     cardLikeButton.addEventListener("click", onLikeButtonClick);
 
     function onLikeButtonClick(evt) {
-      if (evt.target.classList.contains("card__like-button")) {
-        evt.target.classList.toggle("card__like-button_is-active");
-        }
+      evt.target.classList.toggle("card__like-button_is-active");
     }
 
 //ПР-6 finish__________________________________________________________
@@ -52,13 +54,10 @@ initialCards.forEach(cardInfo => {
 
 // ________________________________________________________________________________________________________________
 
-// @todo: Открытие модального окна - общая функция
-function openModal(popupElement) {
-  popupElement.classList.add('popup_is-opened');
-}
+// @todo: Открытие модальных окон - общая функция
+import {openModal} from './modal'
 
 // @todo: Открытие модального окна "Редактировать"
-
 const profileEditButton = document.querySelector(".profile__edit-button");
 const popupTypeEdit = document.querySelector(".popup_type_edit");
 
@@ -74,57 +73,32 @@ profileAddButton.addEventListener('click', function () {
   openModal(popupTypeNewCard);
 });
 
-// @todo: Открытие модального окна "Картинка"
-const popupTypeImage = document.querySelector(".popup_type_image");
-const popupImage = document.querySelector(".popup__image");
-const popupImageCaption = document.querySelector(".popup__caption");
-
-function openBigImagePopup(cardInfo) {
-  popupImage.src = cardInfo.link;
-  popupImage.alt = cardInfo.name;
-  popupImageCaption.textContent = cardInfo.name;
-  openModal(popupTypeImage);
-}
-
-// @todo: Закрытие модальных окон - функция
-
-function closeModal(popupElement) {
-  popupElement.classList.remove('popup_is-opened');
-}
+// @todo: Закрытие модальных окон - общая функция
+import {closeModal} from './modal'
 
 // @todo: Закрытие модального окна кликом на крестик
 const buttonClose = document.querySelectorAll(".popup__close");
 
-function closeAllModals() {
-  closeModal(popupTypeEdit);
-  closeModal(popupTypeNewCard);
-  closeModal(popupTypeImage);
-}
-
 buttonClose.forEach(button => {
-  button.addEventListener('click', function() {
-    closeAllModals();
+  button.addEventListener('click', function(evt) {
+    const popup = evt.target.closest('.popup');
+		closeModal(popup);
   })
-  
 })
 
 // @todo: Закрытие модальных окон кликом на оверлэй
 
-document.querySelectorAll('.popup').forEach(function(popup) {
-  popup.addEventListener('click', function(evt) {
-    if (evt.target.classList.contains('popup')) {
-      closeModal(evt.target)
-    }
-  })
-})
+import {closeModalsClickOverlay} from './modal'
+closeModalsClickOverlay();
 
-// @todo: Закрытие модального окна нажатием на Esc
+// document.querySelectorAll('.popup').forEach(function(popup) {
+//   popup.addEventListener('click', function(evt) {
+//     if (evt.target.classList.contains('popup')) {
+//       closeModal(evt.target)
+//     }
+//   })
+// })
 
-document.addEventListener('keyup', function (evt) {
-  if (evt.keyCode === 27) {
-    closeAllModals();
-  }
-});
 
 // @todo: Редактирование имени и информации о себе
 
