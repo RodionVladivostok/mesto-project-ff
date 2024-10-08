@@ -1,14 +1,13 @@
-const cardTemplate = document.querySelector('#card-template').content;
-const popupTypeImage = document.querySelector('.popup_type_image');
-
 // Функция создания карточки
 export function createCard(cardInfo, deleteCard, onImageClick, clickLikeButton) {
+  const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
   const cardPicture = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
   const buttonDeleteCard = cardElement.querySelector('.card__delete-button');
   buttonDeleteCard.addEventListener('click', deleteCard);
 
+  const popupTypeImage = document.querySelector('.popup_type_image');
   cardPicture.addEventListener('click', function () {
     onImageClick(cardInfo, popupTypeImage);
   });
