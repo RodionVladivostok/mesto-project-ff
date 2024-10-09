@@ -7,9 +7,8 @@ export function createCard(cardInfo, deleteCard, onImageClick, clickLikeButton) 
   const buttonDeleteCard = cardElement.querySelector('.card__delete-button');
   buttonDeleteCard.addEventListener('click', deleteCard);
 
-  const popupTypeImage = document.querySelector('.popup_type_image');
   cardPicture.addEventListener('click', function () {
-    onImageClick(cardInfo, popupTypeImage);
+    onImageClick(cardInfo);
   });
 
   const cardLikeButton = cardElement.querySelector('.card__like-button');
@@ -23,8 +22,8 @@ export function createCard(cardInfo, deleteCard, onImageClick, clickLikeButton) 
 }
 
 // Функция удаления карточки
-export function deleteCard(event) {
-  const cardDelete = event.target.closest('.places__item');
+export function deleteCard(evt) {
+  const cardDelete = evt.target.closest('.places__item');
   cardDelete.remove();
 }
 

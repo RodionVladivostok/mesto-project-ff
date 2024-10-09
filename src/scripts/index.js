@@ -13,6 +13,8 @@ const profileDescription = document.querySelector('.profile__description');
 const profileAddButton = document.querySelector('.profile__add-button');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 
+const popupTypeImage = document.querySelector('.popup_type_image');
+
 const popupImage = document.querySelector('.popup__image');
 const popupImageCaption = document.querySelector('.popup__caption');
 
@@ -47,7 +49,7 @@ profileAddButton.addEventListener('click', function () {
 });
 
 // Открытие модального окна "Картинка"
-function openBigImagePopup(cardInfo, popupTypeImage) {
+function openBigImagePopup(cardInfo) {
   popupImage.src = cardInfo.link;
   popupImage.alt = cardInfo.name;
   popupImageCaption.textContent = cardInfo.name;
@@ -60,13 +62,13 @@ buttonsClose.forEach(button => {
     const popup = evt.target.closest('.popup');
 		closeModal(popup);
   })
-})
+});
 
 // Закрытие модального окна кликом на оверлэй
 closeModalOnOverlay();
 
 // Редактирование имени и информации о себе
-function handleProfileFormSubmit(evt, popupTypeEdit) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
   profileTitle.textContent = popupInputTypeName.value;
@@ -75,9 +77,7 @@ function handleProfileFormSubmit(evt, popupTypeEdit) {
   closeModal(popupTypeEdit);
 }
 
-editProfileFormElement.addEventListener('submit', function (evt) {
-  handleProfileFormSubmit(evt, popupTypeEdit);
-});
+editProfileFormElement.addEventListener('submit', handleProfileFormSubmit);
 
 // Добавление новой карточки в начало списка
 function addNewCardSubmit (evt) {
@@ -100,4 +100,4 @@ newPlaceFormElement.addEventListener('submit', addNewCardSubmit);
 // Плавное открытие и закрытие попапов
 document.querySelectorAll('.popup').forEach(function (popup) {
   popup.classList.add('popup_is-animated');
-})
+});
