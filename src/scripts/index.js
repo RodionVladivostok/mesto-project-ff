@@ -2,6 +2,7 @@ import '../pages/index.css';
 import {initialCards} from './cards';
 import {createCard, deleteCard, clickLikeButton} from './card';
 import {closeModal, closeModalOnOverlay, openModal} from './modal';
+import {enableValidation} from './validation';
 
 const cardsContainer = document.querySelector('.places__list');
 
@@ -27,8 +28,18 @@ const popupInputTypeName = document.querySelector('.popup__input_type_name');
 const popupInputTypeDescription = document.querySelector('.popup__input_type_description');
 
 const newPlaceFormElement = document.forms.new_place;
+const newPlaceSubmitButton = newPlaceFormElement.querySelector('.popup__button');
 const popupInputTypeCardName = document.querySelector('.popup__input_type_card-name');
 const popupInputTypeUrl = document.querySelector('.popup__input_type_url');
+
+const validationConfig = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button',
+  inactiveButtonClass: 'popup__button_disabled',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__error_visible'
+};
 
 // Вывод карточек на страницу
 initialCards.forEach(cardInfo => {
@@ -46,7 +57,14 @@ profileEditButton.addEventListener('click', function () {
 // Открытие модального окна "+"
 profileAddButton.addEventListener('click', function () {
   openModal(popupTypeNewCard);
+  clearValidation(validationConfig)
 });
+
+function clearValidation(validationConfig) {
+  newPlaceSubmitButton.disabled = true;
+  newPlaceSubmitButton.classList.add(validationConfig.inactiveButtonClass);
+  // newPlaceFormElement.reset()
+}
 
 // Открытие модального окна "Картинка"
 function openBigImagePopup(cardInfo) {
@@ -93,6 +111,8 @@ function addNewCardSubmit (evt) {
 
   closeModal(popupTypeNewCard);
   newPlaceFormElement.reset();
+
+  clearValidation(validationConfig)
 }
 
 newPlaceFormElement.addEventListener('submit', addNewCardSubmit);
@@ -101,3 +121,6 @@ newPlaceFormElement.addEventListener('submit', addNewCardSubmit);
 document.querySelectorAll('.popup').forEach(function (popup) {
   popup.classList.add('popup_is-animated');
 });
+
+// Включение валидации форм
+enableValidation(validationConfig);

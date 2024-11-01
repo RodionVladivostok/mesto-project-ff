@@ -24,3 +24,13 @@ export const initialCards = [
       link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg',
     }
 ];
+
+// return fetch('https://nomoreparties.co/v1/wff-cohort-25/cards', {
+//   headers: {
+//     authorization: '3db43119-f3e1-469d-994a-10157145774d'
+//   }
+// })
+//   .then(res => res.json())
+//   .then((result) => {
+//     console.log(result);
+//   });
