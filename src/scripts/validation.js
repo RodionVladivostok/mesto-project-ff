@@ -1,9 +1,3 @@
-// // Вынесем все необходимые элементы формы в константы
-// const formElement = document.querySelector('.popup__form');
-// const popupInput = document.querySelector('.popup__input');
-// const formError = formElement.querySelector(`.${popupInput.id}-error`);
-
-
 const showInputError = (formElement, inputElement, errorMessage, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(config.inputErrorClass);
@@ -36,8 +30,6 @@ const setEventListeners = (formElement, config) => {
   const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
   const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
-  // toggleButtonState(inputList, buttonElement);
-
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
       checkInputValidity(formElement, inputElement, config);
@@ -55,6 +47,13 @@ export const enableValidation = config => {
     setEventListeners(formElement, config);    
   });
 };
+
+export const clearValidation = (profileForm, config) => {
+  const inputList = Array.from(profileForm.querySelectorAll(config.inputSelector));
+  inputList.forEach((inputElement) => {
+    hideInputError(profileForm, inputElement, config);
+  })
+}
 
 const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {

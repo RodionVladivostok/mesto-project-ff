@@ -20,8 +20,8 @@ function closeModalOnEsc(evt) {
 
 // Функция закрытия модального окна кликом на оверлэй
 export function closeModalOnOverlay() {
-	document.querySelectorAll('.popup').forEach(function(popup) {
-    popup.addEventListener('click', function(evt) {
+	document.querySelectorAll('.popup').forEach(popup => {
+    popup.addEventListener('click', (evt) => {
       if (evt.target.classList.contains('popup')) {
         closeModal(evt.target)
       }

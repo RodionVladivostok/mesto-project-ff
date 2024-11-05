@@ -1,0 +1,5 @@
+.profile__image_edit-icon {
+    width: 26px;
+    opacity: 0;
+    transition: 0.3s;
+}
