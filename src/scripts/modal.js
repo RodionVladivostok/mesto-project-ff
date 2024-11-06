@@ -12,7 +12,7 @@ export function closeModal(popupElement) {
 
 // Функция закрытия модального окна кликом на Esc
 function closeModalOnEsc(evt) {
-  if (evt.keyCode === 27) {
+  if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_is-opened');
     closeModal(openedPopup);
   }
@@ -21,7 +21,7 @@ function closeModalOnEsc(evt) {
 // Функция закрытия модального окна кликом на оверлэй
 export function closeModalOnOverlay() {
 	document.querySelectorAll('.popup').forEach(popup => {
-    popup.addEventListener('click', (evt) => {
+    popup.addEventListener('mousedown', (evt) => {
       if (evt.target.classList.contains('popup')) {
         closeModal(evt.target)
       }

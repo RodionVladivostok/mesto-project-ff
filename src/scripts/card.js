@@ -49,6 +49,9 @@ export function deleteCard(evt, id) {
       const cardDelete = evt.target.closest('.places__item');
       cardDelete.remove();
     })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 // Функция - лайк карточки
@@ -64,12 +67,18 @@ export function clickLikeButton(evt, id) {
           likesCountElement.textContent = cardInfo.likes.length;
         }
       })
+      .catch((err) => {
+        console.log(err);
+      });
   } else {
     likeCard(id)
       .then(cardInfo => {
         evt.target.classList.add('card__like-button_is-active');
         likesCountElement.textContent = cardInfo.likes.length;
       })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

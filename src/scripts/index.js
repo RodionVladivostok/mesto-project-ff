@@ -53,7 +53,6 @@ const validationConfig = {
 // Вывод карточек на страницу
 Promise.all([getCards(), getProfileInfo()])
   .then(([cards, user]) => {
-    // const userId = user._id
     cards.forEach(cardInfo => {
       const createdCard = createCard(cardInfo, deleteCard, openBigImagePopup, clickLikeButton, user._id);
       cardsContainer.append(createdCard);
@@ -82,8 +81,7 @@ profileAddButton.addEventListener('click', () => {
   clearValidation(newPlaceFormElement, validationConfig);
   newPlaceSubmitButton.disabled = true;
   newPlaceSubmitButton.classList.add(validationConfig.inactiveButtonClass);
-  popupInputTypeCardName.value = '';
-  popupInputTypeUrl.value = '';
+  newPlaceFormElement.reset();
 });
 
 // Открытие модального окна "Обновить аватар"
@@ -155,7 +153,7 @@ function addNewCardSubmit (evt) {
 newPlaceFormElement.addEventListener('submit', addNewCardSubmit);
 
 // Обновление аватара пользователя
-editAvatarFormElement.addEventListener('submit', evt => {
+function editAvatar (evt) {
   evt.preventDefault();
 
   editAvatarSubmitButton.textContent = 'Сохранение...';
@@ -169,7 +167,9 @@ editAvatarFormElement.addEventListener('submit', evt => {
     .catch((err) => {
       console.log(err);
     });
-});
+}
+
+editAvatarFormElement.addEventListener('submit', editAvatar)
 
 // Плавное открытие и закрытие попапов
 document.querySelectorAll('.popup').forEach(popup => {
